@@ -49,13 +49,63 @@ namespace ShortCuts.Desktop
 
             setWindowsList(WindowHelper.ReadWindows());
 
+            txtSelected.DataContext = updatedItem;
+
             MessageBox.Show($"{item.Summary} {Environment.NewLine} reset to{Environment.NewLine} {updatedItem.Summary}", "Reset Window");
+        }
+
+        private void btnSend_Click(object sender, RoutedEventArgs e)
+        {
+            WindowModel model = (WindowModel)txtSelected.DataContext;
+
+            WindowHelper.SetForground(model.MainWindowHandle);
+
+            InputHelper.SendKeyboardInput(new InputHelper.KeyboardInput[]
+{
+                new InputHelper.KeyboardInput
+                {
+                    wScan = InputHelper.Keys.KEY_L_CTRL,
+                    dwFlags = (uint)(InputHelper.KeyEventF.KeyDown | InputHelper.KeyEventF.Scancode),
+                },
+                new InputHelper.KeyboardInput
+                {
+                    wScan = InputHelper.Keys.KEY_V,
+                    dwFlags = (uint)(InputHelper.KeyEventF.KeyDown | InputHelper.KeyEventF.Scancode),
+                },
+                new InputHelper.KeyboardInput
+                {
+                    wScan = InputHelper.Keys.KEY_V,
+                    dwFlags = (uint)(InputHelper.KeyEventF.KeyUp | InputHelper.KeyEventF.Scancode),
+                },
+                new InputHelper.KeyboardInput
+                {
+                    wScan = InputHelper.Keys.KEY_L_CTRL,
+                    dwFlags = (uint)(InputHelper.KeyEventF.KeyUp | InputHelper.KeyEventF.Scancode),
+                }
+});
+            //InputHelper.ClickKey(InputHelper.Keys.KEY_E);
+
+            //InputHelper.ClickKey(0x11);
+
+            //InputHelper.SendKeyboardInput(new InputHelper.KeyboardInput[]
+            //{
+            //    new InputHelper.KeyboardInput
+            //    {
+            //        wScan = 0xe0,
+            //        dwFlags = (uint)(InputHelper.KeyEventF.ExtendedKey | InputHelper.KeyEventF.Scancode),
+            //    },
+            //    new InputHelper.KeyboardInput
+            //    {
+            //        wScan = 0x30,
+            //        dwFlags = (uint)(InputHelper.KeyEventF.ExtendedKey | InputHelper.KeyEventF.Scancode)
+            //    }
+            //});
         }
         #endregion
 
         private void setWindowsList(List<WindowModel> lst)
         {
             lstWidnows.ItemsSource = lst;
-        }       
+        }
     }
 }

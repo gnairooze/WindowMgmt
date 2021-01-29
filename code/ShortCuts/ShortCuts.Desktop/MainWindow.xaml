@@ -13,8 +13,10 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnReadWindows" Content="Read Windows" FontFamily="Arial" FontSize="100" Margin="20" Click="btnReadWindows_Click" />
+        <Button x:Name="btnReadWindows" Content="Read Windows" FontFamily="Arial" FontSize="60" Margin="20" Grid.Row="0" Grid.Column="0" Click="btnReadWindows_Click" />
+        <Button x:Name="btnSend" Content="Send" FontFamily="Arial" FontSize="60" Margin="20"  Grid.Row="0" Grid.Column="1"  Click="btnSend_Click" />
         <ListBox x:Name="lstWidnows" Grid.Row="1" Grid.Column="0" Margin="10" SelectionChanged="lstWidnows_SelectionChanged" ToolTip="Click to reset window" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -22,5 +24,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <TextBlock x:Name="txtSelected" Grid.Row="1" Grid.Column="1" Text="{Binding Summary}" />
     </Grid>
 </Window>

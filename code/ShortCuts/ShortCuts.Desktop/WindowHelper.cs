@@ -17,11 +17,11 @@ namespace ShortCuts.Desktop
         [DllImport("user32.dll")]
         private static extern int GetWindowRect(IntPtr hwnd, out Rectangle rect);
 
-        [DllImport("user32.dll")]
-        static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
-
         [DllImport("user32.dll", SetLastError = true)]
-        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("User32.dll")]
+        private static extern int SetForegroundWindow(IntPtr point);
         #endregion
 
         private static WindowModel makeModel(Process process, Rectangle rect)
@@ -63,7 +63,7 @@ namespace ShortCuts.Desktop
 
             foreach (Process theprocess in processlist)
             {
-                if(theprocess.MainWindowHandle != IntPtr.Zero)
+                if (theprocess.MainWindowHandle != IntPtr.Zero)
                 {
                     Rectangle rect = Rectangle.Empty;
                     GetWindowRect(theprocess.MainWindowHandle, out rect);
@@ -73,10 +73,10 @@ namespace ShortCuts.Desktop
             }
 
             windows.Sort();
-            
+
             return windows;
         }
-    
+
         public static WindowModel ResetWindow(IntPtr windowHandler, int id)
         {
             SetWindowPos(windowHandler, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
@@ -84,8 +84,13 @@ namespace ShortCuts.Desktop
             Process theprocess = Process.GetProcessById(id);
             Rectangle rect = Rectangle.Empty;
             GetWindowRect(theprocess.MainWindowHandle, out rect);
-            
+
             return makeModel(theprocess, rect);
+        }
+
+        public static void SetForground(IntPtr windowHandler)
+        {
+            SetForegroundWindow(windowHandler);
         }
     }
 }
